@@ -9,8 +9,9 @@ namespace Arkanoid
     {
         #region
         private MoveContrl playerMoves;
-        private PlayerSide.PlayerSidePick playerSide;
+        private PlayerSide playerSide;
         private Vector2 moveInput;
+        private Rigidbody playerRigidBody;
         #endregion
 
 
@@ -18,13 +19,17 @@ namespace Arkanoid
         {
             playerMoves = new MoveContrl();
 
-            if (GetComponent<PlayerSide>() != null)
+            if (GetComponent<GetPlayerSide>() != null)
             {
-                playerSide = GetComponent<PlayerSide>().GetNumber;
+                playerSide = GetComponent<GetPlayerSide>().GetNumber;
             }
 
         }
 
+        private void Start()
+        {
+            playerRigidBody = gameObject.GetComponent<Rigidbody>();
+        }
 
         //start Player control on enable
         private void OnEnable()
@@ -35,19 +40,18 @@ namespace Arkanoid
         private void FixedUpdate()
         {
 
-            if (playerSide == PlayerSide.PlayerSidePick.FirstPlayer)
+            if (playerSide == PlayerSide.FirstPlayer)
             {
                 
                 moveInput = playerMoves.PlayerController.PlayerFirstMove.ReadValue<Vector2>();
-                Debug.Log(gameObject);
-                Move(gameObject.GetComponent<Rigidbody>());
+                Move(playerRigidBody);
             }
-            else if (playerSide == PlayerSide.PlayerSidePick.SecondPlayer)
+            else if (playerSide == PlayerSide.SecondPlayer)
             {
                 moveInput = playerMoves.PlayerController.PlayerSecondMove.ReadValue<Vector2>();
-                Move(gameObject.GetComponent<Rigidbody>());
+                Move(playerRigidBody);
             }
-           
+          
         }
 
         private void OnDisable()
@@ -56,10 +60,10 @@ namespace Arkanoid
         }
 
         //Players move control
-        private void Move(Rigidbody rigidbody)
+        private void Move(Rigidbody player)
         {
-            rigidbody.AddForce(moveInput.x * GameControl.Manager.playerSpeed * transform.right);
-            rigidbody.AddForce(moveInput.y * GameControl.Manager.playerSpeed * transform.up);
+            player.AddForce(moveInput.x * GameManager.Manager.playerSpeed * transform.right);
+            player.AddForce(moveInput.y * GameManager.Manager.playerSpeed * transform.up);
         }
     }
 }

@@ -1,14 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-namespace Arkanoid
+namespace Arkanoid 
 {
-    public class TriggerControl : MonoBehaviour
+    public enum TriggeredControl
     {
-        //for triggering objects
-        [SerializeField] public bool isBlock;
-        [SerializeField] public bool isBoarder;
-
+            Block,
+            Boarder,
+            Default
     }
 }

@@ -56,16 +56,18 @@
     <Analyzer Include="/Applications/Visual Studio.app/Contents/MonoBundle/Addins/MonoDevelop.Unity/Analyzers/Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets/Scripts/IsBall.cs" />
+    <Compile Include="Assets/Scripts/Ball.cs" />
     <Compile Include="Assets/Scripts/GameControl.cs" />
     <Compile Include="Assets/Scripts/LevelTwo.cs" />
     <Compile Include="Assets/Scripts/MoveControl.cs" />
     <Compile Include="Assets/Scripts/MoveController.cs" />
     <Compile Include="Assets/Scripts/BallControl.cs" />
-    <Compile Include="Assets/Scripts/IsBlock.cs" />
+    <Compile Include="Assets/Scripts/Block.cs" />
     <Compile Include="Assets/Scripts/PlayerSide.cs" />
-    <Compile Include="Assets/Scripts/IsBoarder.cs" />
     <Compile Include="Assets/Scripts/TriggerControl.cs" />
+    <Compile Include="Assets/Scripts/GetPlayerSide.cs" />
+    <Compile Include="Assets/Scripts/GetTrigger.cs" />
+    <Compile Include="Assets/Scripts/GameManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
