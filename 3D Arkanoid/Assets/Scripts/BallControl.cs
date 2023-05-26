@@ -11,10 +11,9 @@ public class BallControl : MonoBehaviour
     private MoveContrl playerMoves;
     private GameObject ball;
     private Vector3 ballDirection;
+    private Vector3 lastVelocity;
 
     private bool needParent = true;
-    private bool startShootMove = false;
-    private bool startBounceMove = false;
 
     private float velocityMultiplyer = 1.0f;
 
@@ -42,17 +41,8 @@ public class BallControl : MonoBehaviour
 
     private void Update()
     {
+        lastVelocity = ball.GetComponent<Rigidbody>().velocity;
         SetBallParent();
-
-        if(startShootMove && !startBounceMove)
-        {
-            SetBallMove(transform.forward);
-        }
-        else if(!startShootMove && startBounceMove)
-        {
-            SetBallMove(ballDirection, VelocityMultiplyer);
-        }
-
     }
 
 
@@ -69,35 +59,27 @@ public class BallControl : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         var trigger = collision.gameObject.GetComponent<GetTrigger>();
-        Debug.Log(trigger);
-        Debug.Log(collision.gameObject);
+
         if (trigger != null)
         {
             if (trigger.GetTriggeredObject == TriggeredControl.Block)
             {
-                startShootMove = false;
+                ball.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
                 SetBallBounce(collision);
-                startBounceMove = true;
-
                 StartCoroutine(gameControl.SetDestroy(collision.gameObject));
             }
 
             else if (trigger.GetTriggeredObject == TriggeredControl.Boarder)
             {
-                startShootMove = false;
-                startBounceMove = false;
-
                 StartCoroutine(gameControl.SetCross(collision.gameObject));
             }
             else
             {
-                startShootMove = false;
+                ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+
                 SetBallBounce(collision);
-                startBounceMove = true;
             }
         }
-        Debug.Log(startShootMove);
-        Debug.Log(startBounceMove);
     }
 
     private void OnDisable()
@@ -121,16 +103,15 @@ public class BallControl : MonoBehaviour
             ball.GetComponent<Rigidbody>().isKinematic = false;
             ball.transform.SetParent(null);
 
-            startBounceMove = false;
-            startShootMove = true;
+            SetBallMove();
         }
 
     }
 
     //Control the ball velocity and movement
-    private void SetBallMove(Vector3 direction, float velocityMultiplayer = 1f)
+    private void SetBallMove()
     {
-        ball.transform.position += (GameManager.Manager.ballSpeed * direction * Time.deltaTime * velocityMultiplyer);
+        ball.GetComponent<Rigidbody>().velocity = (GameManager.Manager.ballSpeed * transform.forward * Time.deltaTime);
     }
 
 
@@ -166,13 +147,13 @@ public class BallControl : MonoBehaviour
     //Add bouncing for the ball
     private void SetBallBounce(Collision coll)
     {
-
-        if (VelocityMultiplyer <= GameManager.Manager.maxBallSpeed)
+        if (VelocityMultiplyer <= 1.5)
         {
-            VelocityMultiplyer += GameManager.Manager.ballSpeedRise;
+            VelocityMultiplyer += 0.1f;
         }
+        var direction = Vector3.Reflect(lastVelocity.normalized, coll.contacts[0].normal);
 
-        ballDirection = Vector3.Reflect(ball.transform.position.normalized, coll.contacts[0].normal);
+        ball.GetComponent<Rigidbody>().velocity = (direction * GameManager.Manager.ballSpeed * Time.deltaTime * VelocityMultiplyer);
 
     }
 }
