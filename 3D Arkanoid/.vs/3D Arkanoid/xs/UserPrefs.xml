@@ -1,16 +1,20 @@
 ﻿<Properties StartupConfiguration="{D10641EE-8133-6B35-D188-CE376484C7CF}|">
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="bfc265de-fe3c-419c-8132-767ca4574a39" />
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/TriggerControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Menu/PauseMenu.cs">
     <Files>
-      <File FileName="Assets/Scripts/TriggerControl.cs" Line="20" Column="2" />
-      <File FileName="Assets/Scripts/LevelTwo.cs" Line="6" Column="42" />
-      <File FileName="Assets/Scripts/GameControl.cs" Line="18" Column="28" />
-      <File FileName="Assets/Scripts/PlayerSide.cs" Line="7" Column="1" />
-      <File FileName="Assets/Scripts/MoveControl.cs" Line="9" Column="6" />
-      <File FileName="Assets/Scripts/BallControl.cs" Line="69" Column="14" />
+      <File FileName="Assets/Scripts/MoveControl.cs" Line="36" Column="10" />
+      <File FileName="Assets/Scripts/GameControl.cs" Line="213" Column="30" />
+      <File FileName="Assets/Scripts/BallControl.cs" Line="78" Column="1" />
+      <File FileName="Assets/Scripts/GameManager.cs" Line="57" Column="14" />
+      <File FileName="Assets/Scripts/Menu/MainMenu.cs" Line="34" Column="10" />
+      <File FileName="Assets/Scripts/Menu/Settings.cs" Line="41" Column="1" />
+      <File FileName="Assets/Scripts/Menu/PauseMenu.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Menu/MenuClose.cs" Line="14" Column="10" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -30,7 +34,5 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="3ffc1ad6-0916-44aa-8b6c-ea1078cd4d6e" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

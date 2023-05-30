@@ -21,12 +21,26 @@ namespace Arkanoid
         private Vector3 levelCenter = new Vector3(0f, 7.5f, 0f);
         private float stepFromCenter = 1.5f;
         private float stepFromCenterLength = 3.5f;
+        private float heartStepCanvas = -15f;
         private GameObject nextLevel;
+        private GameObject ball;
+        private Transform firstBallHolder;
+        private Transform secondBallHolder;
+        private GameObject firstBoarder;
+        private GameObject secondBoarder;
+        private GameObject heartPrefab;
 
+        private List<GameObject> heartListFirst;
+        private List<GameObject> heartListSecond;
+        private int lives;
         #endregion
 
         private void Awake()
         {
+            heartPrefab = Resources.Load<GameObject>("Prefabs/Heart");
+            heartListFirst = new List<GameObject>();
+            heartListSecond = new List<GameObject>();
+
             blocksTypes = new List<GameObject>
             {
                 Resources.Load<GameObject>("Prefabs/Block Type1"),
@@ -42,10 +56,21 @@ namespace Arkanoid
         }
         private void Start()
         {
-            playerOneStartPos = GameManager.Manager.firstBallHolder.parent.gameObject.transform.position;
-            playerTwoStartPos = GameManager.Manager.secondBallHolder.parent.gameObject.transform.position;
+            ball = GameManager.Manager.ball;
+            firstBallHolder = GameManager.Manager.firstBallHolder;
+            secondBallHolder = GameManager.Manager.secondBallHolder;
+            firstBoarder = GameManager.Manager.firstBoarder;
+            secondBoarder = GameManager.Manager.secondBoarder;
+            lives = GameManager.lives;
+
+            playerOneStartPos = firstBallHolder.parent.gameObject.transform.position;
+            playerTwoStartPos = secondBallHolder.parent.gameObject.transform.position;
+
+            GameManager.Manager.livesTextFirst.text = "Lives left: " + lives;
+            GameManager.Manager.livesTextSecond.text = "Lives left: " + lives;
 
             GetBlockSpawn(0f);
+            HeartSpawn();
 
             foreach(GameObject block in blocks)
             {
@@ -62,7 +87,7 @@ namespace Arkanoid
         //Destroy blocks on collision with ball
         public IEnumerator SetDestroy(GameObject objectTriggered)
         {
-            if (GameManager.Manager.ball != null && objectTriggered.GetComponent<Block>() != null)
+            if (ball != null && objectTriggered.GetComponent<Block>() != null)
             {
                 blocks.Remove(objectTriggered);
                 Destroy(objectTriggered);
@@ -75,25 +100,41 @@ namespace Arkanoid
         public IEnumerator SetCross(GameObject objectTriggered)
         {
 
-            if (GameManager.Manager.ball != null && objectTriggered.GetComponent<GetTrigger>().GetTriggeredObject == TriggeredControl.Boarder)
+            if (ball != null && objectTriggered.GetComponent<GetTrigger>().GetTriggeredObject == TriggeredControl.Boarder)
             {
-                if (objectTriggered == GameManager.Manager.firstBoarder)
+                if (objectTriggered == firstBoarder)
                 {
-                    GameManager.Manager.ball.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
-                    GameManager.Manager.ball.transform.position = GameManager.Manager.firstBallHolder.transform.position;
-                    GameManager.Manager.ball.transform.rotation = GameManager.Manager.firstBallHolder.transform.rotation;
-                    GameManager.Manager.lifes--;
-                    Debug.Log("Lifes left:");
-                    Debug.Log(GameManager.Manager.lifes);
+                    ball.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
+                    ball.transform.position = firstBallHolder.transform.position;
+                    ball.transform.rotation = firstBallHolder.transform.rotation;
+
+                    Destroy(heartListFirst[heartListFirst.Count - 1]);
+                    Destroy(heartListSecond[heartListSecond.Count - 1]);
+
+                    heartListFirst.RemoveAt(heartListFirst.Count - 1);
+                    heartListSecond.RemoveAt(heartListSecond.Count - 1);
+
+                    lives--;
+
+                    GameManager.Manager.livesTextFirst.text = "Lives left: " + lives;
+                    GameManager.Manager.livesTextSecond.text = "Lives left: " + lives;
                 }
-                else if (objectTriggered == GameManager.Manager.secondBoarder)
+                else if (objectTriggered == secondBoarder)
                 {
-                    GameManager.Manager.ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-                    GameManager.Manager.ball.transform.position = GameManager.Manager.secondBallHolder.transform.position;
-                    GameManager.Manager.ball.transform.rotation = GameManager.Manager.secondBallHolder.transform.rotation;
-                    GameManager.Manager.lifes--;
-                    Debug.Log("Lifes left:");
-                    Debug.Log(GameManager.Manager.lifes);
+                    ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+                    ball.transform.position = secondBallHolder.transform.position;
+                    ball.transform.rotation = secondBallHolder.transform.rotation;
+
+                    Destroy(heartListFirst[heartListFirst.Count - 1]);
+                    Destroy(heartListSecond[heartListSecond.Count - 1]);
+
+                    heartListFirst.RemoveAt(heartListFirst.Count - 1);
+                    heartListSecond.RemoveAt(heartListSecond.Count - 1);
+
+                    lives--;
+
+                    GameManager.Manager.livesTextFirst.text = "Lives left: " + lives;
+                    GameManager.Manager.livesTextSecond.text = "Lives left: " + lives;
                 }
 
                 yield return new WaitForSeconds(0f);
@@ -139,9 +180,9 @@ namespace Arkanoid
         //Condition on loose game
         private void EndGame()
         {
-            if(GameManager.Manager.lifes <= 0)
+            if(lives <= 0)
             {
-                GameManager.Manager.ball.SetActive(false);
+                ball.SetActive(false);
                 Debug.Log("Game ended. You lost!");
                 Debug.Log("Restart the game");
 
@@ -155,7 +196,7 @@ namespace Arkanoid
             if(blocks.Count == 0)
             {
                 Debug.Log("You Won!");
-                GameManager.Manager.ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+                ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
                 NextLevel();
             }
         }
@@ -166,9 +207,10 @@ namespace Arkanoid
             if (nextLevel.activeSelf == false)
             {
                 nextLevel.SetActive(true);
-                GameManager.Manager.lifes = 3;
+                GameManager.Manager.GameDifficulty(GameManager.Manager.difficulty);
 
                 GetBlockSpawn(nextLevelStep);
+                HeartSpawn();
 
                 foreach (GameObject block in blocks)
                 {
@@ -189,8 +231,8 @@ namespace Arkanoid
         //Moving players platform on win
         private void MovePlayers()
         {
-            var playerOne = GameManager.Manager.firstBallHolder.parent.gameObject;
-            var playerTwo = GameManager.Manager.secondBallHolder.parent.gameObject;
+            var playerOne = firstBallHolder.parent.gameObject;
+            var playerTwo = secondBallHolder.parent.gameObject;
 
             playerOne.transform.position = new Vector3(playerOneStartPos.x + nextLevelStep, playerOneStartPos.y, playerOneStartPos.z);
             playerTwo.transform.position = new Vector3(playerTwoStartPos.x + nextLevelStep, playerTwoStartPos.y, playerTwoStartPos.z);
@@ -200,9 +242,27 @@ namespace Arkanoid
         //Set ball to start position on win
         private void SetBallOnStart()
         {
-            GameManager.Manager.ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-            GameManager.Manager.ball.transform.position = GameManager.Manager.firstBallHolder.transform.position;
+            ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+            ball.transform.position = firstBallHolder.transform.position;
 
+        }
+
+        //spawning the amount of heart image into the game
+        private void HeartSpawn()
+        {
+            for(int i =0; i<lives; i++)
+            {
+                GameObject heartFirst = Instantiate(heartPrefab, new Vector3(GameManager.Manager.heartHolderFirst.position.x + i * heartStepCanvas, GameManager.Manager.heartHolderFirst.position.y, GameManager.Manager.heartHolderFirst.position.z)
+                    , transform.rotation, GameManager.Manager.heartHolderFirst);
+
+                heartListFirst.Add(heartFirst);
+
+                GameObject heartSecond = Instantiate(heartPrefab, new Vector3(GameManager.Manager.heartHolderFirst.position.x + i * heartStepCanvas, GameManager.Manager.heartHolderFirst.position.y, GameManager.Manager.heartHolderFirst.position.z)
+                     , transform.rotation, GameManager.Manager.heartHolderSecond);
+
+                heartListSecond.Add(heartSecond);
+
+            }
         }
     }
 }

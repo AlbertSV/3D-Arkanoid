@@ -58,16 +58,20 @@
   <ItemGroup>
     <Compile Include="Assets/Scripts/Ball.cs" />
     <Compile Include="Assets/Scripts/GameControl.cs" />
+    <Compile Include="Assets/Scripts/GetPlayerSide.cs" />
     <Compile Include="Assets/Scripts/LevelTwo.cs" />
+    <Compile Include="Assets/Scripts/GetTrigger.cs" />
     <Compile Include="Assets/Scripts/MoveControl.cs" />
+    <Compile Include="Assets/Scripts/Menu/MainMenu.cs" />
+    <Compile Include="Assets/Scripts/GameManager.cs" />
     <Compile Include="Assets/Scripts/MoveController.cs" />
     <Compile Include="Assets/Scripts/BallControl.cs" />
     <Compile Include="Assets/Scripts/Block.cs" />
     <Compile Include="Assets/Scripts/PlayerSide.cs" />
+    <Compile Include="Assets/Scripts/Menu/Settings.cs" />
     <Compile Include="Assets/Scripts/TriggerControl.cs" />
-    <Compile Include="Assets/Scripts/GetPlayerSide.cs" />
-    <Compile Include="Assets/Scripts/GetTrigger.cs" />
-    <Compile Include="Assets/Scripts/GameManager.cs" />
+    <Compile Include="Assets/Scripts/Menu/PauseMenu.cs" />
+    <Compile Include="Assets/Scripts/Menu/MenuClose.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets/TextMesh Pro/Shaders/TMPro.cginc" />

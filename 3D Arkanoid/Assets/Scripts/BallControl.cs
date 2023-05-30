@@ -10,6 +10,8 @@ public class BallControl : MonoBehaviour
     #region
     private MoveContrl playerMoves;
     private GameObject ball;
+    private Transform firstBallHolder;
+    private Transform secondBallHolder;
     private Vector3 ballDirection;
     private Vector3 lastVelocity;
 
@@ -36,6 +38,8 @@ public class BallControl : MonoBehaviour
 
     private void Start()
     {
+        firstBallHolder = GameManager.Manager.firstBallHolder;
+        secondBallHolder = GameManager.Manager.secondBallHolder;
         ball = GameManager.Manager.ball;
     }
 
@@ -111,32 +115,32 @@ public class BallControl : MonoBehaviour
     //Control the ball velocity and movement
     private void SetBallMove()
     {
-        ball.GetComponent<Rigidbody>().velocity = (GameManager.Manager.ballSpeed * transform.forward * Time.deltaTime);
+        ball.GetComponent<Rigidbody>().velocity = (GameManager.ballSpeed * transform.forward * Time.deltaTime);
     }
 
 
     //Set ball to start player position
     private void SetBallParent()
     {
-        if (ball.transform.position == GameManager.Manager.firstBallHolder.position && needParent)
+        if (ball.transform.position == firstBallHolder.position && needParent)
         {
             ball.GetComponent<Rigidbody>().isKinematic = true;
-            ball.transform.parent = GameManager.Manager.firstBallHolder;
+            ball.transform.parent = firstBallHolder;
             if (ball.transform.parent != null)
             {
                 needParent = false;
             }
         }
-        else if (ball.transform.position == GameManager.Manager.secondBallHolder.position && needParent)
+        else if (ball.transform.position == secondBallHolder.position && needParent)
         {
             ball.GetComponent<Rigidbody>().isKinematic = true;
-            ball.transform.SetParent(GameManager.Manager.secondBallHolder);
+            ball.transform.SetParent(secondBallHolder);
             if (ball.transform.parent != null)
             {
                 needParent = false;
             }
         }
-        else if (ball.transform.position != GameManager.Manager.secondBallHolder.position || ball.transform.position != GameManager.Manager.firstBallHolder.position)
+        else if (ball.transform.position != secondBallHolder.position || ball.transform.position != firstBallHolder.position)
         {
             needParent = true;
         }
@@ -153,7 +157,7 @@ public class BallControl : MonoBehaviour
         }
         var direction = Vector3.Reflect(lastVelocity.normalized, coll.contacts[0].normal);
 
-        ball.GetComponent<Rigidbody>().velocity = (direction * GameManager.Manager.ballSpeed * Time.deltaTime * VelocityMultiplyer);
+        ball.GetComponent<Rigidbody>().velocity = (direction * GameManager.ballSpeed * Time.deltaTime * VelocityMultiplyer);
 
     }
 }

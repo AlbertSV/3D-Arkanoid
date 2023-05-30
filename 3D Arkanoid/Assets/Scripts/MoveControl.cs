@@ -18,7 +18,6 @@ namespace Arkanoid
         private void Awake()
         {
             playerMoves = new MoveContrl();
-
             if (GetComponent<GetPlayerSide>() != null)
             {
                 playerSide = GetComponent<GetPlayerSide>().GetNumber;
@@ -28,6 +27,7 @@ namespace Arkanoid
 
         private void Start()
         {
+            
             playerRigidBody = gameObject.GetComponent<Rigidbody>();
         }
 
