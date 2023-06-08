@@ -9,7 +9,8 @@ namespace Arkanoid
 {
     public class MainMenu : MonoBehaviour
     {
-        public GameObject mainMenuUI;
+        [SerializeField] private GameObject _mainMenuUI;
+        [SerializeField] private GameObject _optionMenuUI;
 
 
         public void PlayGame()
@@ -17,6 +18,12 @@ namespace Arkanoid
             StartCoroutine(WaitForAnimation());
             
         }
+
+        public void OptionMenu()
+        {
+            _mainMenuUI.SetActive(false);
+            _optionMenuUI.SetActive(true);
+        }    
 
         public void QuitGame()
         {

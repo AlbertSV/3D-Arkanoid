@@ -7,8 +7,8 @@ namespace Arkanoid
     public class GetPlayerSide : MonoBehaviour
     {
         [Tooltip("Player side"), SerializeField]
-        private PlayerSide playerNumber;
+        private PlayerSide _playerNumber;
 
-        public PlayerSide GetNumber => playerNumber;
+        public PlayerSide GetNumber => _playerNumber;
     }
 }

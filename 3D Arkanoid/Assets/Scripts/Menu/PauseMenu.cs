@@ -7,26 +7,32 @@ namespace Arkanoid
 {
     public class PauseMenu : MonoBehaviour
     {
-        public static bool gameIsPaused = false;
-        public GameObject pauseMenuUI;
-        private bool isOpen;
-        private Animator animator;
+        public static bool _gameIsPaused = false;
+        public GameObject _pauseMenuUI;
+        private Animator _animator;
 
         private void Start()
         {
-            animator = pauseMenuUI.GetComponent<Animator>();
+            _animator = _pauseMenuUI.GetComponent<Animator>();
         }
 
         void Update()
         {
-            if(Input.GetKeyDown(KeyCode.Escape))
+
+            if(_gameIsPaused)
             {
-                if(gameIsPaused)
+                Time.timeScale = 0f;
+            }
+            else
+            {
+                Time.timeScale = 1f;
+            }
+
+            if(Input.GetKeyUp(KeyCode.Escape))
+            {
+                if(!_gameIsPaused)
                 {
-                    Resume();
-                }
-                else
-                {
+
                     Pause();
                 }
             }
@@ -34,24 +40,25 @@ namespace Arkanoid
 
         public void Resume()
         { 
-            animator.SetBool("Open", false);
+            _animator.SetBool("Open", false);
             StartCoroutine(WaitForAnimation());
-            Time.timeScale = 1f;
-            gameIsPaused = false;
-            StopCoroutine(WaitForAnimation());
-            
+            _gameIsPaused = false;
+      
+
         }
 
         private void Pause()
         {
-            pauseMenuUI.SetActive(true);
-            animator.SetBool("Open", true);
-            Time.timeScale = 0f;
-            gameIsPaused = true;
+            
+            _pauseMenuUI.SetActive(true);
+            _animator.SetBool("Open", true);
+            _gameIsPaused = true;
+            
         }
 
         public void RestartGame()
         {
+            _gameIsPaused = false;
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
@@ -70,7 +77,7 @@ namespace Arkanoid
         private IEnumerator WaitForAnimation()
         {
             yield return new WaitForSeconds(1f);
-            pauseMenuUI.SetActive(false);
+            _pauseMenuUI.SetActive(false);
         }
     }
 }

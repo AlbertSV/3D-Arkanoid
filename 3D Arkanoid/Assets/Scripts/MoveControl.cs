@@ -8,19 +8,19 @@ namespace Arkanoid
     public class MoveControl : MonoBehaviour
     {
         #region
-        private MoveContrl playerMoves;
-        private PlayerSide playerSide;
-        private Vector2 moveInput;
-        private Rigidbody playerRigidBody;
+        private MoveContrl  _playerMoves;
+        private PlayerSide _playerSide;
+        private Vector2 _moveInput;
+        private Rigidbody _playerRigidBody;
         #endregion
 
 
         private void Awake()
         {
-            playerMoves = new MoveContrl();
+            _playerMoves = new MoveContrl();
             if (GetComponent<GetPlayerSide>() != null)
             {
-                playerSide = GetComponent<GetPlayerSide>().GetNumber;
+                _playerSide = GetComponent<GetPlayerSide>().GetNumber;
             }
 
         }
@@ -28,42 +28,42 @@ namespace Arkanoid
         private void Start()
         {
             
-            playerRigidBody = gameObject.GetComponent<Rigidbody>();
+            _playerRigidBody = gameObject.GetComponent<Rigidbody>();
         }
 
         //start Player control on enable
         private void OnEnable()
         {
-            playerMoves.PlayerController.Enable();
+            _playerMoves.PlayerController.Enable();
         }
 
         private void FixedUpdate()
         {
 
-            if (playerSide == PlayerSide.FirstPlayer)
+            if (_playerSide == PlayerSide.FirstPlayer)
             {
                 
-                moveInput = playerMoves.PlayerController.PlayerFirstMove.ReadValue<Vector2>();
-                Move(playerRigidBody);
+                _moveInput = _playerMoves.PlayerController.PlayerFirstMove.ReadValue<Vector2>();
+                Move(_playerRigidBody);
             }
-            else if (playerSide == PlayerSide.SecondPlayer)
+            else if (_playerSide == PlayerSide.SecondPlayer)
             {
-                moveInput = playerMoves.PlayerController.PlayerSecondMove.ReadValue<Vector2>();
-                Move(playerRigidBody);
+                _moveInput = _playerMoves.PlayerController.PlayerSecondMove.ReadValue<Vector2>();
+                Move(_playerRigidBody);
             }
           
         }
 
         private void OnDisable()
         {
-            playerMoves.PlayerController.Disable();
+            _playerMoves.PlayerController.Disable();
         }
 
         //Players move control
         private void Move(Rigidbody player)
         {
-            player.AddForce(moveInput.x * GameManager.Manager.playerSpeed * transform.right);
-            player.AddForce(moveInput.y * GameManager.Manager.playerSpeed * transform.up);
+            player.AddForce(_moveInput.x * GameManager.Manager.playerSpeed * transform.right);
+            player.AddForce(_moveInput.y * GameManager.Manager.playerSpeed * transform.up);
         }
     }
 }

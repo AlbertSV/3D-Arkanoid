@@ -8,54 +8,52 @@ using static UnityEngine.InputSystem.InputAction;
 public class BallControl : MonoBehaviour
 {
     #region
-    private MoveContrl playerMoves;
-    private GameObject ball;
-    private Transform firstBallHolder;
-    private Transform secondBallHolder;
-    private Vector3 ballDirection;
-    private Vector3 lastVelocity;
+    private MoveContrl _playerMoves;
+    private GameControl _gameControl;
+    private GameObject _ball;
+    private Transform _firstBallHolder;
+    private Transform _secondBallHolder;
+    private Vector3 _lastVelocity;
 
-    private bool needParent = true;
+    private bool _needParent = true;
 
-    private float velocityMultiplyer = 1.0f;
-
-    private GameControl gameControl;
+    private float _velocityMultiplyer = 1.0f;
     #endregion
 
 
     public float VelocityMultiplyer
     {
-        get { return velocityMultiplyer; }
-        set { velocityMultiplyer = value; }
+        get { return _velocityMultiplyer; }
+        set { _velocityMultiplyer = value; }
     }
 
 
     private void Awake()
     {
-        gameControl = gameObject.AddComponent<GameControl>();
-        playerMoves = new MoveContrl();
+        _gameControl = gameObject.AddComponent<GameControl>();
+        _playerMoves = new MoveContrl();
     }
 
     private void Start()
     {
-        firstBallHolder = GameManager.Manager.firstBallHolder;
-        secondBallHolder = GameManager.Manager.secondBallHolder;
-        ball = GameManager.Manager.ball;
+        _firstBallHolder = GameManager.Manager.firstBallHolder;
+        _secondBallHolder = GameManager.Manager.secondBallHolder;
+        _ball = GameManager.Manager.ball;
     }
 
     private void Update()
     {
-        lastVelocity = ball.GetComponent<Rigidbody>().velocity;
+        _lastVelocity = _ball.GetComponent<Rigidbody>().velocity;
         SetBallParent();
     }
 
 
     private void OnEnable()
     {
-        playerMoves.PlayerController.Enable();
+        _playerMoves.PlayerController.Enable();
 
-        playerMoves.PlayerController.PlayerSecondShoot.performed += OnShoot;
-        playerMoves.PlayerController.PlayerFirstShoot.performed += OnShoot;
+        _playerMoves.PlayerController.PlayerSecondShoot.performed += OnShoot;
+        _playerMoves.PlayerController.PlayerFirstShoot.performed += OnShoot;
 
     }
     
@@ -68,18 +66,18 @@ public class BallControl : MonoBehaviour
         {
             if (trigger.GetTriggeredObject == TriggeredControl.Block)
             {
-                ball.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
+                _ball.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
                 SetBallBounce(collision);
-                StartCoroutine(gameControl.SetDestroy(collision.gameObject));
+                StartCoroutine(_gameControl.SetDestroy(collision.gameObject));
             }
 
             else if (trigger.GetTriggeredObject == TriggeredControl.Boarder)
             {
-                StartCoroutine(gameControl.SetCross(collision.gameObject));
+                StartCoroutine(_gameControl.SetCross(collision.gameObject));
             }
             else
             {
-                ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+                _ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
 
                 SetBallBounce(collision);
             }
@@ -88,9 +86,9 @@ public class BallControl : MonoBehaviour
 
     private void OnDisable()
     {
-        playerMoves.PlayerController.Disable();
-        playerMoves.PlayerController.PlayerFirstShoot.performed -= OnShoot;
-        playerMoves.PlayerController.PlayerSecondShoot.performed -= OnShoot;
+        _playerMoves.PlayerController.Disable();
+        _playerMoves.PlayerController.PlayerFirstShoot.performed -= OnShoot;
+        _playerMoves.PlayerController.PlayerSecondShoot.performed -= OnShoot;
     }
 
     //Activate ball shooting
@@ -104,8 +102,8 @@ public class BallControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.RightShift))
         {
-            ball.GetComponent<Rigidbody>().isKinematic = false;
-            ball.transform.SetParent(null);
+            _ball.GetComponent<Rigidbody>().isKinematic = false;
+            _ball.transform.SetParent(null);
 
             SetBallMove();
         }
@@ -115,34 +113,34 @@ public class BallControl : MonoBehaviour
     //Control the ball velocity and movement
     private void SetBallMove()
     {
-        ball.GetComponent<Rigidbody>().velocity = (GameManager.ballSpeed * transform.forward * Time.deltaTime);
+        _ball.GetComponent<Rigidbody>().velocity = (GameManager.ballSpeed * transform.forward * Time.deltaTime);
     }
 
 
     //Set ball to start player position
     private void SetBallParent()
     {
-        if (ball.transform.position == firstBallHolder.position && needParent)
+        if (_ball.transform.position == _firstBallHolder.position && _needParent)
         {
-            ball.GetComponent<Rigidbody>().isKinematic = true;
-            ball.transform.parent = firstBallHolder;
-            if (ball.transform.parent != null)
+            _ball.GetComponent<Rigidbody>().isKinematic = true;
+            _ball.transform.parent = _firstBallHolder;
+            if (_ball.transform.parent != null)
             {
-                needParent = false;
+                _needParent = false;
             }
         }
-        else if (ball.transform.position == secondBallHolder.position && needParent)
+        else if (_ball.transform.position == _secondBallHolder.position && _needParent)
         {
-            ball.GetComponent<Rigidbody>().isKinematic = true;
-            ball.transform.SetParent(secondBallHolder);
-            if (ball.transform.parent != null)
+            _ball.GetComponent<Rigidbody>().isKinematic = true;
+            _ball.transform.SetParent(_secondBallHolder);
+            if (_ball.transform.parent != null)
             {
-                needParent = false;
+                _needParent = false;
             }
         }
-        else if (ball.transform.position != secondBallHolder.position || ball.transform.position != firstBallHolder.position)
+        else if (_ball.transform.position != _secondBallHolder.position || _ball.transform.position != _firstBallHolder.position)
         {
-            needParent = true;
+            _needParent = true;
         }
 
 
@@ -155,9 +153,9 @@ public class BallControl : MonoBehaviour
         {
             VelocityMultiplyer += 0.1f;
         }
-        var direction = Vector3.Reflect(lastVelocity.normalized, coll.contacts[0].normal);
+        var direction = Vector3.Reflect(_lastVelocity.normalized, coll.contacts[0].normal);
 
-        ball.GetComponent<Rigidbody>().velocity = (direction * GameManager.ballSpeed * Time.deltaTime * VelocityMultiplyer);
+        _ball.GetComponent<Rigidbody>().velocity = (direction * GameManager.ballSpeed * Time.deltaTime * VelocityMultiplyer);
 
     }
 }
