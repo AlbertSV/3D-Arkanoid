@@ -1,19 +1,16 @@
 ﻿<Properties StartupConfiguration="{D10641EE-8133-6B35-D188-CE376484C7CF}|">
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/GameControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Menu/PauseMenu.cs">
     <Files>
       <File FileName="Assets/Scripts/MoveControl.cs" />
-      <File FileName="Assets/Scripts/GameControl.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/GameControl.cs" />
       <File FileName="Assets/Scripts/BallControl.cs" />
       <File FileName="Assets/Scripts/GameManager.cs" />
       <File FileName="Assets/Scripts/Menu/MainMenu.cs" />
       <File FileName="Assets/Scripts/Menu/Settings.cs" />
-      <File FileName="Assets/Scripts/Menu/PauseMenu.cs" Line="72" Column="46" />
+      <File FileName="Assets/Scripts/Menu/PauseMenu.cs" Line="77" Column="1" />
       <File FileName="Assets/Scripts/Menu/MenuClose.cs" />
+      <File FileName="Assets/Scripts/GetPlayerSide.cs" />
+      <File FileName="Assets/Scripts/MoveController.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -21,7 +18,9 @@
           <Node name="3D Arkanoid" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="Menu" expanded="True" />
+                <Node name="Menu" expanded="True">
+                  <Node name="PauseMenu.cs" selected="True" />
+                </Node>
               </Node>
             </Node>
           </Node>
@@ -30,5 +29,10 @@
     </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="aa814fc8-e2e6-46a5-a3d7-64e2f8dc3ff2" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="6bf3ac85-35e3-49a9-98e9-d2c393186853" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>
